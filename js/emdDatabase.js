@@ -446,6 +446,43 @@ const emdDatabase = {
     "36-A-3   Abnormal breathing with multiple flu symptoms",
     "36-O-1   Flu symptoms only (cough, fever, chills, sweats, sore throat, diarrhea, body aches, headache, etc.)",
     "36-O-2   Chest pain <35 with multiple flu symptoms"
-]
+],
 
+"Special Assignments / EMS Standbys": [
+
+    "90-A-1 Public Event EMS Standby",
+    "90-A-2 Sporting Event EMS Standby",
+    "90-A-3 Concert / Festival EMS Standby",
+    "90-A-4 Parade EMS Standby",
+    "90-A-5 Fair / Carnival EMS Standby",
+    "90-A-6 School Event EMS Standby",
+    "90-A-7 Community Event EMS Standby",
+    "90-A-8 Standby - Fireworks Display",
+    "90-A-9 Film / TV Production Standby",
+
+    "90-B-1 Law Enforcement Standby",
+    "90-B-2 Fire Department Standby",
+    "90-B-3 Rescue Team Standby",
+    "90-B-4 HazMat Standby",
+    "90-B-5 Technical Rescue Standby",
+    "90-B-6 Dive Team Standby",
+    "90-B-7 SWAT / Tactical EMS",
+    "90-B-8 K-9 Deployment Standby",
+
+    "90-C-1 Aircraft Standby",
+    "90-C-2 Helicopter Landing Zone Standby",
+    "90-C-3 VIP Protection Detail",
+    "90-C-4 Dignitary Escort",
+    "90-C-5 High-Risk Public Event",
+    "90-C-6 Planned Mass Gathering",
+
+    "90-D-1 Disaster Standby",
+    "90-D-2 Severe Weather Standby",
+    "90-D-3 Hurricane Response Staging",
+    "90-D-4 Wildland Fire Standby",
+    "90-D-5 Mass Casualty Staging",
+    "90-D-6 Incident Rehabilitation Assignment"
+
+]
+    
 };

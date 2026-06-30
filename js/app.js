@@ -836,6 +836,7 @@ function newIncident() {
             <option>Automatic Crash Notification</option>
             <option>Health Care Professional Admission</option>
             <option>Pandemic Flu</option>
+            <option>Special Assignments / EMS Standbys</option>
 
             
         </select>
