@@ -1095,52 +1095,84 @@ function completeAssignment(incidentNumber) {
 
     if (!incident) return;
 
-    // Release ONLY units currently assigned to THIS incident
-    incident.assignedUnits.forEach(unitName => {
-
-        const unit = units.find(u => u.name === unitName);
-
-        if (unit) {
-            unit.status = "Available";
-            unit.incident = null;
-        }
-
-    });
-
-    // Clear this incident's assignment list
-    incident.assignedUnits = [];
-
     const boxes = document.querySelectorAll(".assignUnit");
+
+    // Store the previous assignments
+    const previousAssignments = [...incident.assignedUnits];
+
+    // Build the new assignment list
+    const newAssignments = [];
 
     boxes.forEach(box => {
 
-        const unit = units.find(u => u.name === box.value);
-
-        if (!unit) return;
-
         if (box.checked) {
+            newAssignments.push(box.value);
+        }
 
-            // Don't steal units from another incident
-            if (unit.incident && unit.incident !== incident.number) {
-                return;
+    });
+
+    // -------------------------------------------------
+    // Release units removed from this incident
+    // -------------------------------------------------
+
+    previousAssignments.forEach(unitName => {
+
+        if (!newAssignments.includes(unitName)) {
+
+            const unit = units.find(u => u.name === unitName);
+
+            if (unit) {
+
+                unit.status = "Available";
+                unit.incident = null;
+
+                addLog(unit.name + " removed from Incident " + incident.number);
+
             }
-
-            unit.status = "Dispatched";
-            unit.incident = incident.number;
-
-            incident.assignedUnits.push(unit.name);
 
         }
 
     });
+
+    // -------------------------------------------------
+    // Assign NEW units only
+    // -------------------------------------------------
+
+    newAssignments.forEach(unitName => {
+
+        const unit = units.find(u => u.name === unitName);
+
+        if (!unit) return;
+
+        // Skip if already committed to another incident
+        if (
+            unit.incident &&
+            unit.incident !== incident.number
+        ) {
+            return;
+        }
+
+        // Only change status if this is a NEW assignment
+        if (unit.incident !== incident.number) {
+
+            unit.status = "Dispatched";
+
+            unit.incident = incident.number;
+
+            addLog(unit.name + " assigned to Incident " + incident.number);
+
+        }
+
+    });
+
+    // Save assignment list
+    incident.assignedUnits = newAssignments;
 
     buildUnitBoard();
 
     refreshIncidentList();
 
     updateCounters();
-
-    addLog("Units assigned to Incident " + incident.number);
 
     showIncident(incident);
 
