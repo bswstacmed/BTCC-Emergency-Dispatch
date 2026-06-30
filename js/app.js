@@ -1094,21 +1094,20 @@ function completeAssignment(incidentNumber) {
 
     if (!incident) return;
 
-    // Clear all current assignments first
-incident.assignedUnits = [];
+    // Release ONLY units currently assigned to THIS incident
+    incident.assignedUnits.forEach(unitName => {
 
-// Reset every unit assigned to this incident
-units.forEach(unit => {
+        const unit = units.find(u => u.name === unitName);
 
-    if (unit.incident === incident.number) {
+        if (unit) {
+            unit.status = "Available";
+            unit.incident = null;
+        }
 
-        unit.status = "Available";
+    });
 
-        unit.incident = null;
-
-    }
-
-});
+    // Clear this incident's assignment list
+    incident.assignedUnits = [];
 
     const boxes = document.querySelectorAll(".assignUnit");
 
@@ -1120,23 +1119,23 @@ units.forEach(unit => {
 
         if (box.checked) {
 
-            unit.status = "Dispatched";
+            // Don't steal units from another incident
+            if (unit.incident && unit.incident !== incident.number) {
+                return;
+            }
 
+            unit.status = "Dispatched";
             unit.incident = incident.number;
 
             incident.assignedUnits.push(unit.name);
-
-        } else {
-
-            unit.status = "Available";
-
-            unit.incident = null;
 
         }
 
     });
 
     buildUnitBoard();
+
+    refreshIncidentList();
 
     updateCounters();
 
@@ -1145,6 +1144,7 @@ units.forEach(unit => {
     showIncident(incident);
 
     saveData();
+
 }
 
 // =====================================================
