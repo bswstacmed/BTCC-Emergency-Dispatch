@@ -1014,8 +1014,15 @@ function createIncident() {
         incident.callType +
         ")"
     );
+// Play new incident tone
+const tone = document.getElementById("newCallTone");
 
-    showIncident(incident);
+if (tone) {
+    tone.currentTime = 0;
+    tone.play().catch(err => console.log("Audio blocked:", err));
+}
+
+showIncident(incident);
 
 }
 
