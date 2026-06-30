@@ -1,0 +1,341 @@
+/* ===================================================
+   BTCC EMERGENCY DISPATCH CAD
+   =================================================== */
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+
+    font-family:Segoe UI,Arial,sans-serif;
+
+    background:#293140;
+
+    color:white;
+
+}
+
+/* ================= LOGIN ================= */
+
+.loginHeader{
+
+    background:#3a5475;
+
+    text-align:center;
+
+    padding:25px;
+
+    border-bottom:4px solid #1d2633;
+
+}
+
+.loginCard{
+
+    width:420px;
+
+    margin:70px auto;
+
+    background:white;
+
+    color:black;
+
+    border-radius:10px;
+
+    padding:35px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+}
+
+/* ================= HEADER ================= */
+
+.cadHeader{
+
+    background:#3a5475;
+
+    padding:18px 25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-bottom:3px solid #202734;
+
+}
+
+.headerRight{
+
+    text-align:right;
+
+}
+
+#clock{
+
+    font-size:28px;
+
+    font-weight:bold;
+
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar{
+
+    background:#1f2734;
+
+    padding:12px;
+
+    display:flex;
+
+    gap:10px;
+
+    border-bottom:1px solid #444;
+
+}
+
+.toolbar button{
+
+    min-width:150px;
+
+}
+
+/* ================= STATUS BAR ================= */
+
+.statusBar{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:10px;
+
+    background:#293140;
+
+    padding:12px;
+
+}
+
+.statusBar div{
+
+    background:#36485f;
+
+    text-align:center;
+
+    padding:14px;
+
+    border-radius:8px;
+
+    font-size:18px;
+
+}
+
+/* ================= MAIN GRID ================= */
+
+.mainGrid{
+
+    display:grid;
+
+    grid-template-columns:
+
+        18%
+
+        24%
+
+        30%
+
+        28%;
+
+    gap:12px;
+
+    padding:12px;
+
+    height:calc(100vh - 210px);
+
+}
+
+/* ================= PANELS ================= */
+
+.panel{
+
+    background:#36485f;
+
+    border-radius:8px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.30);
+
+}
+
+.panelTitle{
+
+    background:#3a5475;
+
+    padding:12px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    letter-spacing:1px;
+
+}
+
+.panel > div:last-child{
+
+    padding:15px;
+
+    overflow-y:auto;
+
+    flex:1;
+
+}
+
+/* ================= UNITS ================= */
+
+.unit{
+
+    border-radius:6px;
+
+    padding:10px;
+
+    margin-bottom:8px;
+
+    cursor:pointer;
+
+    transition:.15s;
+
+    border-left:5px solid transparent;
+
+}
+
+.unit:hover{
+
+    transform:translateX(4px);
+
+}
+
+/* Available */
+
+.available{
+
+    background:#31543b;
+
+    border-left-color:#37ff6b;
+
+}
+
+/* Dispatched */
+
+.dispatched{
+
+    background:#225ea8;
+
+    border-left-color:#6cb6ff;
+
+}
+
+/* Enroute */
+
+.enroute{
+
+    background:#9b7a00;
+
+    border-left-color:#ffe100;
+
+}
+
+/* On Scene */
+
+.onscene{
+
+    background:#b85f00;
+
+    border-left-color:#ffb347;
+
+}
+
+/* Medical Bay */
+
+.medicalbay{
+
+    background:#0078b8;
+
+    border-left-color:#74d8ff;
+
+}
+
+/* Out of Service */
+
+.oos{
+
+    background:#7d2020;
+
+    border-left-color:#ff5f5f;
+
+}
+
+/* ================= HEADINGS ================= */
+
+h5{
+
+    margin-top:12px;
+
+    color:white;
+
+    border-bottom:1px solid #4b5f79;
+
+    padding-bottom:4px;
+
+}
+
+/* ================= ACTIVITY LOG ================= */
+
+#activityLog{
+
+    font-family:Consolas,monospace;
+
+    font-size:14px;
+
+    line-height:1.6;
+
+}
+
+/* ================= DETAILS ================= */
+
+#detailsPanel button{
+
+    margin-bottom:10px;
+
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#4d6485;
+
+    border-radius:4px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#293140;
+
+}
