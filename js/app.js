@@ -330,7 +330,7 @@ function createUnitSection(type) {
 
            let incidentText = "";
 
-if (unit.incident) {
+if (unit.incident !== null && unit.incident !== undefined) {
 
     incidentText =
         "<br><small><strong>Incident " +
@@ -341,7 +341,7 @@ if (unit.incident) {
 
 div.innerHTML =
     icon +
-    " <strong>" + unit.name + "</strong><br>" +
+    " <strong>" + unit.name.toUpperCase() + "</strong><br>"+
     "<small>" + unit.status + "</small>" +
     incidentText;
 
@@ -378,7 +378,7 @@ function showUnit(unit) {
 
     document.getElementById("detailsPanel").innerHTML = `
 
-        <h3>${unit.name}</h3>
+        <h3>${unit.name.toUpperCase()}</h3>
 
         <hr>
 
@@ -644,7 +644,7 @@ function refreshIncidentList() {
 
             <strong>${incident.number}</strong><br>
 
-            ${incident.callType}<br>
+            ${incident.callType.toUpperCase()}<br>
 
             <small>${incident.location}</small>
 
@@ -679,7 +679,7 @@ function showIncident(incident){
 
         <strong>Call Type</strong><br>
 
-        ${incident.callType}
+        ${incident.callType.toUpperCase()}
 
         <hr>
 
@@ -711,10 +711,12 @@ function showIncident(incident){
 
         <br><br>
 
-        ${
-            incident.assignedUnits.length === 0
-            ? "No Units Assigned"
-            : incident.assignedUnits.join("<br>")
+       ${
+    incident.assignedUnits.length === 0
+        ? "No Units Assigned"
+        : incident.assignedUnits
+            .map(unit => unit.toUpperCase())
+            .join("<br>")
         }
 
         <hr>
@@ -1064,7 +1066,7 @@ function assignUnits(incidentNumber) {
                     value="${unit.name}"
                     ${checked}>
 
-                ${unit.name}
+                ${unit.name.toUpperCase()}
 
                 <small>(${unit.status})</small>
 
