@@ -1914,3 +1914,27 @@ function printIncidentPDF(incidentNumber) {
     doc.save("BTCC_Incident_" + incident.number + ".pdf");
 
 }
+
+// =====================================================
+// MANUAL ALERT TONES
+// =====================================================
+
+function playRoutineTone() {
+
+    const audio = document.getElementById("routineTone");
+
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play();
+
+}
+
+function playEmergencyTone() {
+
+    const audio = document.getElementById("emergencyTone");
+
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play();
+
+}
