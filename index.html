@@ -103,6 +103,14 @@
     </button>
 
     <button
+        class="btn btn-secondary"
+        onclick="showClosedIncidents()">
+
+        📋 Closed Incidents
+
+    </button>
+
+    <button
         class="btn btn-danger"
         onclick="resetEvent()">
 
@@ -244,12 +252,16 @@
 
 </div>
 
+<script src="js/jspdf.umd.min.js"></script>
+
 <script src="js/emdDatabase.js"></script>
 
 <script src="js/app.js"></script>
 
-</body>
 <audio id="newCallTone" preload="auto">
     <source src="audio/CAD tone.mp3" type="audio/mpeg">
 </audio>
+
+</body>
+
 </html>

@@ -1616,3 +1616,301 @@ function reopenIncident(number){
     showIncident(incident);
 
 }
+
+// =====================================================
+// CLOSED INCIDENTS
+// =====================================================
+
+function showClosedIncidents() {
+
+    let html = `
+        <h3>Closed Incidents</h3>
+        <hr>
+    `;
+
+    if (closedIncidents.length === 0) {
+
+        html += "<p>No closed incidents.</p>";
+
+    } else {
+
+        closedIncidents
+            .slice()
+            .reverse()
+            .forEach(incident => {
+
+                html += `
+
+                    <div class="unit available mb-2">
+
+                        <strong>Incident ${incident.number}</strong><br>
+
+                        ${incident.callType.toUpperCase()}<br>
+
+                        <small>${incident.location}</small><br>
+
+                        <small>Closed: ${incident.closed}</small>
+
+                        <br><br>
+
+                        <button
+                            class="btn btn-primary btn-sm"
+                            onclick="viewClosedIncident(${incident.number})">
+
+                            View Report
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+    }
+
+    document.getElementById("detailsPanel").innerHTML = html;
+
+}
+
+function viewClosedIncident(number){
+
+    const incident =
+        closedIncidents.find(i => i.number == number);
+
+    if(!incident) return;
+
+    document.getElementById("detailsPanel").innerHTML = `
+
+        <h3>Closed Incident ${incident.number}</h3>
+
+        <hr>
+
+        <strong>Call Type</strong><br>
+
+        ${incident.callType.toUpperCase()}
+
+        <hr>
+
+        <strong>EMD Code</strong><br>
+
+        ${incident.emdCode}
+
+        <hr>
+
+        <strong>Location</strong><br>
+
+        ${incident.location}
+
+        <hr>
+
+        <strong>Created</strong><br>
+
+        ${incident.created}
+
+        <hr>
+
+        <strong>Closed</strong><br>
+
+        ${incident.closed}
+
+        <hr>
+
+        <strong>Assigned Units</strong><br>
+
+        ${
+            incident.assignedUnits.length
+                ? incident.assignedUnits
+                    .map(u=>u.toUpperCase())
+                    .join("<br>")
+                : "None"
+        }
+
+        <hr>
+
+        <strong>Notes</strong>
+
+        <div style="border:1px solid #555;padding:10px;border-radius:5px;min-height:80px;">
+
+            ${incident.notes || "None"}
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn btn-success w-100"
+            onclick="printIncidentPDF(${incident.number})">
+
+            Download PDF Report
+
+        </button>
+
+    `;
+
+}
+
+// =====================================================
+// PRINT CLOSED INCIDENT PDF
+// =====================================================
+
+function printIncidentPDF(incidentNumber) {
+
+    const incident = closedIncidents.find(i => i.number == incidentNumber);
+
+    if (!incident) {
+        alert("Incident not found.");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    let y = 20;
+
+    // Header
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("BTCC EMS INCIDENT REPORT", 105, y, { align: "center" });
+
+    y += 12;
+
+    doc.setLineWidth(0.5);
+    doc.line(15, y, 195, y);
+
+    y += 10;
+
+    // Incident Information
+    doc.setFontSize(14);
+    doc.text("Incident Information", 15, y);
+
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+
+    doc.text("Incident Number:", 15, y);
+    doc.text(String(incident.number), 70, y);
+
+    y += 7;
+
+    doc.text("Status:", 15, y);
+    doc.text("CLOSED", 70, y);
+
+    y += 7;
+
+    doc.text("Opened:", 15, y);
+    doc.text(String(incident.created), 70, y);
+
+    y += 7;
+
+    doc.text("Closed:", 15, y);
+    doc.text(String(incident.closed), 70, y);
+
+    y += 12;
+
+    // Incident Details
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("Incident Details", 15, y);
+
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+
+    doc.text("Call Type:", 15, y);
+    doc.text(String(incident.callType).toUpperCase(), 70, y);
+
+    y += 7;
+
+    doc.text("EMD Code:", 15, y);
+    doc.text(String(incident.emdCode), 70, y);
+
+    y += 7;
+
+    doc.text("Location:", 15, y);
+    doc.text(String(incident.location), 70, y);
+
+    y += 12;
+
+    // Assigned Units
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("Assigned Units", 15, y);
+
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+
+    if (incident.assignedUnits.length === 0) {
+
+        doc.text("None", 20, y);
+
+        y += 7;
+
+    } else {
+
+        incident.assignedUnits.forEach(unit => {
+
+            doc.text("• " + unit.toUpperCase(), 20, y);
+
+            y += 7;
+
+        });
+
+    }
+
+    y += 5;
+
+    // Notes / Timeline
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("Incident Notes / Timeline", 15, y);
+
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+
+    const notes = incident.notes
+        ? doc.splitTextToSize(incident.notes, 170)
+        : ["None"];
+
+    doc.text(notes, 20, y);
+
+    y += (notes.length * 6) + 10;
+
+    // Dispatcher Summary
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.text("Dispatcher Activity Summary", 15, y);
+
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
+
+    doc.text("Incident Created", 20, y);
+
+    y += 6;
+
+    doc.text("Units Assigned", 20, y);
+
+    y += 6;
+
+    doc.text("Incident Closed", 20, y);
+
+    y += 12;
+
+    doc.line(15, y, 195, y);
+
+    y += 8;
+
+    doc.setFont("helvetica", "italic");
+    doc.text("END OF REPORT", 105, y, { align: "center" });
+
+    doc.save("BTCC_Incident_" + incident.number + ".pdf");
+
+}
