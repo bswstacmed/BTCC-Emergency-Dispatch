@@ -182,6 +182,26 @@ addLog("Dispatcher logged in.");
 }
 
 // =====================================================
+// DATE / TIME FORMAT
+// =====================================================
+
+function getDateTime() {
+
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+}
+
+// =====================================================
 // CLOCK
 // =====================================================
 
@@ -197,8 +217,12 @@ function updateClock() {
 
     const now = new Date();
 
-    document.getElementById("clock").innerHTML =
-        now.toLocaleTimeString();
+    const time =
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0") + ":" +
+        String(now.getSeconds()).padStart(2, "0");
+
+    document.getElementById("clock").innerHTML = time;
 
 }
 
@@ -208,7 +232,7 @@ function updateClock() {
 
 function addLog(message) {
 
-    const now = new Date().toLocaleTimeString();
+    const now = getDateTime();
 
     const log = document.getElementById("activityLog");
 
@@ -476,10 +500,12 @@ function updateUnitStatus(unitName, newStatus) {
 
         if (incident) {
 
-            const stamp = new Date().toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit"
-            });
+            const now = new Date();
+
+            const stamp =
+                String(now.getHours()).padStart(2, "0") + ":" +
+                String(now.getMinutes()).padStart(2, "0") + ":" +
+                String(now.getSeconds()).padStart(2, "0");
 
             let message = "";
 
@@ -581,21 +607,31 @@ function newIncident() {
 
 function confirmIncident() {
 
+    const initialNote =
+        document.getElementById("notes").value.trim();
+
+    const now = new Date();
+
+    const stamp =
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0") + ":" +
+        String(now.getSeconds()).padStart(2, "0");
+
     const incident = {
 
-    number: nextIncidentNumber,
-    created: new Date().toLocaleString(),
-    callType: selectedCallType || "Unknown",
-    emdCode: selectedEmdCode || "N/A",
-    location:
-    document.getElementById("location").value === "Custom Location..."
-        ? (document.getElementById("customLocation").value.trim() || "Custom Location")
-        : document.getElementById("location").value,
-    status: "Active",
-    assignedUnits: [],
-    notes: ""
+        number: nextIncidentNumber,
+        created: getDateTime(),
+        callType: selectedCallType || "Unknown",
+        emdCode: selectedEmdCode || "N/A",
+        location:
+            document.getElementById("location").value === "Custom Location..."
+                ? (document.getElementById("customLocation").value.trim() || "Custom Location")
+                : document.getElementById("location").value,
+        status: "Active",
+        assignedUnits: [],
+        notes: initialNote ? "[" + stamp + "] " + initialNote : ""
 
-};
+    };
 
     incidents.push(incident);
 
@@ -610,8 +646,8 @@ function confirmIncident() {
     newIncident();
 
     saveData();
-}
 
+}
 // =====================================================
 // INCIDENT LIST
 // =====================================================
@@ -999,7 +1035,7 @@ function createIncident() {
 
         assignedUnits: [],
 
-        created: new Date().toLocaleTimeString()
+        created: getDateTime()
 
     };
 
@@ -1224,7 +1260,7 @@ function closeIncident(incidentNumber) {
 if (index !== -1) {
 
     incident.status = "Closed";
-    incident.closed = new Date().toLocaleString();
+    incident.closed = getDateTime();
 
     closedIncidents.push(incident);
 
@@ -1383,26 +1419,6 @@ allIncidents.forEach(incident => {
 
 }
 
-function toggleCustomLocation() {
-
-    const location = document.getElementById("location").value;
-
-    const custom = document.getElementById("customLocation");
-
-    if (location === "Custom Location...") {
-
-        custom.style.display = "block";
-        custom.focus();
-
-    } else {
-
-        custom.style.display = "none";
-        custom.value = "";
-
-    }
-
-}
-
 function addIncidentNote(incidentNumber) {
 
     const incident = incidents.find(i => i.number === incidentNumber);
@@ -1413,10 +1429,12 @@ function addIncidentNote(incidentNumber) {
 
     if (text === "") return;
 
-    const stamp = new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+    const now = new Date();
+
+    const stamp =
+        String(now.getHours()).padStart(2, "0") + ":" +
+        String(now.getMinutes()).padStart(2, "0") + ":" +
+        String(now.getSeconds()).padStart(2, "0");
 
     if (incident.notes && incident.notes.length > 0) {
 
