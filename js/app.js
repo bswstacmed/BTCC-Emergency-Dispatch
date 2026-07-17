@@ -109,6 +109,20 @@ const units = [
         incident: null
     },
 
+    {
+        name: "Nurse 1",
+        type: "Responder",
+        status: "Available",
+        incident: null
+    },
+
+    {
+        name: "Nurse 2",
+        type: "Responder",
+        status: "Available",
+        incident: null
+    },
+
     // BLS
 
     {
@@ -1325,13 +1339,23 @@ function loadData() {
 
     if (savedUnits) {
 
-        const loaded = JSON.parse(savedUnits);
+    const loaded = JSON.parse(savedUnits);
 
-        units.length = 0;
+    // Update existing units from saved data
+    loaded.forEach(savedUnit => {
 
-        loaded.forEach(u => units.push(u));
+        const unit = units.find(u => u.name === savedUnit.name);
 
-    }
+        if (unit) {
+
+            unit.status = savedUnit.status;
+            unit.incident = savedUnit.incident;
+
+        }
+
+    });
+
+}
 
     if (savedIncidents) {
 
